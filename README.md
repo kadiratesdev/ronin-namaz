@@ -15,15 +15,15 @@
 ## 📋 Özellikler
 
 - ✅ **Oyun Saatine Göre Vakit Belirleme** — Sabah, Öğle, İkindi, Akşam, Yatsı vakitleri otomatik hesaplanır.
-- ✅ **rpemotes Bağımsız** — Tüm namaz animasyonları (`smo@prayer_posepack`) script içinde `stream` olarak gelir, harici bağımlılık yoktur.
+- ✅ **Dahili Animasyonlar** — Tüm namaz animasyonları (`smo@prayer_posepack`) script içinde `stream` olarak gelir, harici bağımlılık yoktur.
 - ✅ **Kesintisiz Animasyon Geçişleri** — `TaskPlayAnim` ile animasyonlar arasında takılma/ayakta kalma olmaz.
-- ✅ **Takbir ile Başlama** — Namaz "Allahu Ekber" (Takbir) ile başlar, doğru sırayla devam eder.
+- ✅ **Tekbir ile Başlama** — Namaz "Allahu Ekber" (Tekbir) ile başlar, doğru sırayla devam eder.
 - ✅ **Otomatik & Manuel İlerleme** — Otomatik modda adımlar kendi kendine geçer, isterseniz manuel kontrol edebilirsiniz.
 - ✅ **Hatırlatıcı Sistemi** — Vakit yaklaştığında veya geçmeye yakın ekran bildirimi alırsınız.
 - ✅ **Namaz Hatırlatıcı Ayarları** — Hangi vakitlerde, kaç dakika önce hatırlatma alacağınızı localStorage'da kaydederek özelleştirebilirsiniz.
 - ✅ **X ile İptal** — Namaz sırasında `X` tuşuna basarak anında iptal edebilirsiniz.
 - ✅ **Kompakt NUI** — Küçük, şeffaf, modern arayüz. Namaz sırasında karakterinizi izleyebilirsiniz.
-- ✅ **Rekât Sıralaması** — Farz, Sünnet, Son Sünnet ve Vitir seçenekleri ile doğru rekât sayısı.
+- ✅ **Rekaat Sıralaması** — Farz, Sünnet, Son Sünnet ve Vitir seçenekleri ile doğru rekaat sayısı.
 - ✅ **Çift Yönlü Selam** — Namaz bitiminde sağa ve sola selam verilir.
 
 ---
@@ -116,7 +116,6 @@ ronin-namaz/
 |------------|---------|-----|
 | FiveM / RedM | ✅ | CFX Platform |
 | QBCore | ❌ | Opsiyonel, bildirimler için kullanılır |
-| rpemotes | ❌ | **Artık gerekmez**, animasyonlar script içindedir |
 
 ---
 
