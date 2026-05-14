@@ -28,12 +28,6 @@
 
 ---
 
-## 📸 Ekran Görüntüleri
-
-> *(Ekran görüntülerinizi buraya ekleyebilirsiniz)*
-
----
-
 ## 📺 Tanıtım Videosu
 
 <div align="center">
