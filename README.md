@@ -34,6 +34,18 @@
 
 ---
 
+## 📺 Tanıtım Videosu
+
+<div align="center">
+
+[![Ronin Namaz - Tanıtım Videosu](https://img.youtube.com/vi/vAf2-Na2GUs/0.jpg)](https://www.youtube.com/watch?v=vAf2-Na2GUs)
+
+**[▶ YouTube'da İzle](https://www.youtube.com/watch?v=vAf2-Na2GUs)**
+
+</div>
+
+---
+
 ## 🚀 Kurulum
 
 1. Bu repoyu indirin veya klonlayın:
