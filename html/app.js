@@ -15,12 +15,14 @@ const screens = {
     flow: document.getElementById('prayer-flow'),
     completion: document.getElementById('completion-screen'),
     settings: document.getElementById('settings-screen'),
-    about: document.getElementById('about-screen')
+    about: document.getElementById('about-screen'),
+    zikir: document.getElementById('zikir-screen')
 };
 
 const app = document.getElementById('app');
 const gameTime = document.getElementById('game-time');
 const prayerCards = document.getElementById('prayer-cards');
+const specialPrayerCards = document.getElementById('special-prayer-cards');
 
 // ========== NUI Mesajları ==========
 window.addEventListener('message', function(event) {
@@ -64,7 +66,9 @@ function openApp(data) {
     if (data) {
         gameTime.textContent = `${String(data.currentHour).padStart(2, '0')}:${String(data.currentMinute).padStart(2, '0')}`;
         renderPrayerCards(data.prayerTimes, data.currentPrayer);
-        if (data.prayerTimes) prayerTimesData = data.prayerTimes;
+        renderSpecialPrayerCards(data.specialPrayers);
+        const allPrayers = [...(data.prayerTimes || []), ...(data.specialPrayers || [])];
+        if (allPrayers.length) prayerTimesData = allPrayers;
     }
     showScreen('selection');
 }
@@ -90,6 +94,8 @@ function showScreen(screen) {
 function renderPrayerCards(prayerTimes, currentPrayer) {
     prayerCards.innerHTML = '';
     
+    if (!prayerTimes) return;
+    
     prayerTimes.forEach(prayer => {
         const isActive = currentPrayer && currentPrayer.id === prayer.id;
         const card = document.createElement('div');
@@ -105,10 +111,33 @@ function renderPrayerCards(prayerTimes, currentPrayer) {
     });
 }
 
+function renderSpecialPrayerCards(specialPrayers) {
+    if (!specialPrayerCards) return;
+    specialPrayerCards.innerHTML = '';
+    
+    if (!specialPrayers || specialPrayers.length === 0) {
+        specialPrayerCards.style.display = 'none';
+        return;
+    }
+    
+    specialPrayerCards.style.display = 'grid';
+    
+    specialPrayers.forEach(prayer => {
+        const card = document.createElement('div');
+        card.className = 'prayer-card special';
+        card.innerHTML = `
+            <span class="card-icon">${prayer.icon}</span>
+            <div class="card-name">${prayer.name}</div>
+            <div class="card-time">${prayer.description}</div>
+        `;
+        card.addEventListener('click', () => showPrayerDetail(prayer));
+        specialPrayerCards.appendChild(card);
+    });
+}
+
 // ========== Namaz Detayı ==========
 function showPrayerDetail(prayer) {
     selectedPrayer = prayer;
-    selectedType = 'fard';
     
     document.getElementById('detail-icon').textContent = prayer.icon;
     document.getElementById('detail-name').textContent = prayer.name;
@@ -120,6 +149,25 @@ function showPrayerDetail(prayer) {
         extra: document.getElementById('option-extra'),
         vitr: document.getElementById('option-vitr')
     };
+    
+    // Cenaze namazı için özel ekran (rekât seçimi yok)
+    if (prayer.id === 'cenaze') {
+        Object.values(options).forEach(opt => opt.style.display = 'none');
+        document.getElementById('rakah-options').style.display = 'none';
+        selectedType = 'cenaze';
+        document.getElementById('btn-start').style.display = 'flex';
+        showScreen('detail');
+        return;
+    }
+    
+    // Normal namazlar için mevcut mantık
+    document.getElementById('rakah-options').style.display = 'grid';
+    Object.values(options).forEach(opt => {
+        opt.style.display = '';
+        opt.classList.remove('disabled', 'active');
+    });
+    
+    selectedType = 'fard';
     
     if (prayer.sunnah && prayer.sunnah > 0) {
         options.sunnah.classList.remove('disabled');
@@ -162,6 +210,7 @@ function showPrayerDetail(prayer) {
         selectedType = 'sunnah';
     }
     
+    document.getElementById('btn-start').style.display = 'flex';
     showScreen('detail');
 }
 
@@ -239,8 +288,9 @@ function updateFlow(data) {
     totalSteps = data.totalSteps;
     sequence = data.sequence || sequence;
     
+    const rakahLabel = data.prayerType === 'cenaze' ? 'Tekbir' : 'Rekât';
     document.getElementById('rakah-text').textContent = 
-        `${data.currentRakah} / ${data.totalRakah} Rekât`;
+        `${data.currentRakah} / ${data.totalRakah} ${rakahLabel}`;
     
     document.getElementById('position-icon').textContent = data.stepIcon;
     document.getElementById('position-name').textContent = data.stepName;
@@ -277,11 +327,12 @@ function renderEmoteList() {
     sequence.forEach((step, index) => {
         const item = document.createElement('div');
         item.className = `emote-item ${index + 1 === currentStep ? 'active' : ''} ${index + 1 < currentStep ? 'completed' : ''}`;
+        const rakahLabel = step.type === 'cenaze' ? 'Tekbir' : 'Rekât';
         item.innerHTML = `
             <span class="item-number">${index + 1}</span>
             <span class="item-icon">${step.emote.icon}</span>
             <span class="item-name">${step.stepName}</span>
-            <span class="item-rakah">${step.rakah}. Rekât</span>
+            <span class="item-rakah">${step.rakah}. ${rakahLabel}</span>
         `;
         item.addEventListener('click', () => {
             fetch('https://ronin-namaz/goToStep', {
@@ -303,7 +354,8 @@ function typeLabel(type) {
         fard: 'Farz',
         sunnah: 'Sünnet',
         extraSunnah: 'Son Sünnet',
-        vitr: 'Vitir'
+        vitr: 'Vitir',
+        cenaze: 'Cenaze'
     };
     return labels[type] || type;
 }
@@ -344,7 +396,13 @@ document.getElementById('btn-cancel').addEventListener('click', () => {
 
 // ========== Tamamlama Ekranı ==========
 function showCompletion(data) {
-    const text = `${data.prayerName} ${typeLabel(data.prayerType)} namazınızı eda ettiniz.`;
+    app.classList.remove('hidden');
+    let text = '';
+    if (data.prayerType === 'cenaze') {
+        text = `${data.prayerName} namazınızı eda ettiniz.`;
+    } else {
+        text = `${data.prayerName} ${typeLabel(data.prayerType)} namazınızı eda ettiniz.`;
+    }
     document.getElementById('completion-text').textContent = text;
     showScreen('completion');
 }
@@ -361,7 +419,7 @@ function resetToSelection() {
     totalSteps = 0;
     autoEnabled = true;
     if (autoTimer) clearTimeout(autoTimer);
-    showScreen('selection');
+    closeApp();
 }
 
 // ========== Klavye ==========
@@ -411,7 +469,7 @@ function getDefaultSettings() {
         enabled: true,
         beforeStart: 15,
         beforeEnd: 10,
-        prayers: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true }
+        prayers: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true, cuma: true, teravih: true, cenaze: true }
     };
 }
 
@@ -563,3 +621,55 @@ document.getElementById('btn-save-settings').addEventListener('click', () => {
     });
     showScreen('selection');
 });
+
+// ========== ZikirMatik ==========
+let zikirCount = 0;
+let zikirTarget = 99;
+
+document.getElementById('btn-zikir').addEventListener('click', () => {
+    openZikir();
+});
+
+document.getElementById('btn-zikir-back').addEventListener('click', () => {
+    showScreen('selection');
+});
+
+function openZikir() {
+    updateZikirUI();
+    showScreen('zikir');
+}
+
+document.getElementById('zikir-btn').addEventListener('click', () => {
+    zikirCount++;
+    updateZikirUI();
+    if (zikirCount >= zikirTarget) {
+        showToast({
+            icon: '📿',
+            title: 'Zikir Tamamlandı',
+            body: `Hedefinize ulaştınız! ${zikirTarget} zikir çekildi. Allah kabul etsin.`
+        });
+    }
+});
+
+document.querySelectorAll('.zikir-target-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.zikir-target-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        zikirTarget = parseInt(this.dataset.target);
+        zikirCount = 0;
+        updateZikirUI();
+    });
+});
+
+document.getElementById('zikir-reset').addEventListener('click', () => {
+    zikirCount = 0;
+    updateZikirUI();
+});
+
+function updateZikirUI() {
+    document.getElementById('zikir-count').textContent = zikirCount;
+    document.getElementById('zikir-target').textContent = zikirTarget;
+    document.getElementById('zikir-progress-text').textContent = `${zikirCount} / ${zikirTarget}`;
+    const pct = zikirTarget > 0 ? Math.min((zikirCount / zikirTarget) * 100, 100) : 0;
+    document.getElementById('zikir-progress-fill').style.width = `${pct}%`;
+}

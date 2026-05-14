@@ -67,6 +67,32 @@ Config.PrayerTimes = {
     }
 }
 
+-- Özel Namazlar (vakit bağımsız)
+Config.SpecialPrayers = {
+    {
+        id = "cuma",
+        name = "Cuma",
+        icon = "🕌",
+        fard = 4,
+        description = "4 Farz (Hutbe sonrası)"
+    },
+    {
+        id = "teravih",
+        name = "Teravih",
+        icon = "🌙",
+        sunnah = 20,
+        description = "20 Rekât Sünnet"
+    },
+    {
+        id = "cenaze",
+        name = "Cenaze",
+        icon = "⚰️",
+        type = "cenaze",
+        tekbirCount = 4,
+        description = "4 Tekbir + Dua + Selam"
+    }
+}
+
 -- Emote süreleri (saniye)
 Config.EmoteDurations = {
     qiyam = 6,

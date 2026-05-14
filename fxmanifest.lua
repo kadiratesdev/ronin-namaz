@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'Ronin Base'
 description 'Gelişmiş Namaz Sistemi - kendi animasyonları ile'
-version '1.0.0'
+version '1.1.0'
 
 icon 'icon.png'
 

@@ -3,7 +3,7 @@ local currentPrayer = nil
 local currentRakah = 0
 local currentStep = 0
 local totalRakah = 0
-local currentType = "fard" -- fard, sunnah, vitr
+local currentType = "fard" -- fard, sunnah, vitr, cenaze
 local prayerSequence = {}
 local isPraying = false
 local autoProgress = false
@@ -58,6 +58,60 @@ end
 local function BuildPrayerSequence(prayer, type)
     local sequence = {}
     local rakahCount = 0
+
+    if type == "cenaze" then
+        local tekbirCount = prayer.tekbirCount or 4
+
+        for i = 1, tekbirCount do
+            -- Tekbir (eller kaldır)
+            table.insert(sequence, {
+                emote = Config.Emotes.takbir,
+                stepName = "Tekbir (" .. i .. "/" .. tekbirCount .. ")",
+                rakah = i,
+                duration = Config.EmoteDurations.takbir,
+                type = type
+            })
+
+            -- Kıyam / Dua
+            table.insert(sequence, {
+                emote = Config.Emotes.qiyam,
+                stepName = i == 1 and "Kıyam (Fatiha)" or "Kıyam (Dua)",
+                rakah = i,
+                duration = Config.EmoteDurations.qiyam,
+                type = type
+            })
+        end
+
+        -- Son tekbirden sonra teşehhüd
+        table.insert(sequence, {
+            emote = Config.Emotes.tashahhud,
+            stepName = "Teşehhüd",
+            rakah = tekbirCount,
+            duration = Config.EmoteDurations.tashahhud,
+            type = type
+        })
+
+        -- Selam sağa
+        table.insert(sequence, {
+            emote = Config.Emotes.tasleem,
+            stepName = "Selam (Sağ)",
+            rakah = tekbirCount,
+            duration = Config.EmoteDurations.tasleem,
+            type = type
+        })
+
+        -- Selam sola
+        table.insert(sequence, {
+            emote = Config.Emotes.tasleemAlt,
+            stepName = "Selam (Sol)",
+            rakah = tekbirCount,
+            duration = Config.EmoteDurations.tasleem,
+            type = type,
+            isLast = true
+        })
+
+        return sequence
+    end
 
     if type == "sunnah" then
         rakahCount = prayer.sunnah or 0
@@ -203,9 +257,11 @@ end
 -- Namazı bitir
 local function FinishPrayer()
     isPraying = false
-    isUIOpen = false
+    isUIOpen = true
     autoProgress = false
     StopEmote()
+
+    SetNuiFocus(true, true)
 
     SendNUIMessage({
         action = "finishPrayer",
@@ -355,7 +411,9 @@ local function StartPrayer(prayer, type)
     isPraying = true
     autoProgress = true
 
-    if type == "sunnah" then
+    if type == "cenaze" then
+        totalRakah = prayer.tekbirCount or 4
+    elseif type == "sunnah" then
         totalRakah = prayer.sunnah or 0
     elseif type == "fard" then
         totalRakah = prayer.fard or 0
@@ -423,6 +481,7 @@ local function OpenUI()
         action = "open",
         data = {
             prayerTimes = Config.PrayerTimes,
+            specialPrayers = Config.SpecialPrayers,
             currentPrayer = currentPrayerTime,
             currentHour = GetClockHours(),
             currentMinute = GetClockMinutes()
@@ -453,6 +512,15 @@ RegisterNUICallback('startPrayer', function(data, cb)
         if p.id == prayerId then
             selectedPrayer = p
             break
+        end
+    end
+
+    if not selectedPrayer then
+        for _, p in ipairs(Config.SpecialPrayers) do
+            if p.id == prayerId then
+                selectedPrayer = p
+                break
+            end
         end
     end
 
