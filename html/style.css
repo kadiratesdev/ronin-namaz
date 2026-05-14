@@ -1,0 +1,1189 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0a0a1a;
+    --bg-secondary: rgba(20, 20, 40, 0.85);
+    --bg-glass: rgba(30, 30, 55, 0.6);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.45);
+    --accent-gold: #d4af37;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --accent-blue: #3498db;
+    --accent-purple: #9b59b6;
+    --gradient-gold: linear-gradient(135deg, #d4af37, #f39c12);
+    --gradient-green: linear-gradient(135deg, #27ae60, #2ecc71);
+    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.4);
+    --radius: 12px;
+    --radius-sm: 8px;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: transparent;
+    color: var(--text-primary);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ana uygulama */
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 20px;
+    position: relative;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#app.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Arka plan efektleri */
+.bg-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.25;
+    animation: float 8s ease-in-out infinite;
+}
+
+.orb-1 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.4), transparent 70%);
+    top: -80px;
+    right: -80px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(155, 89, 182, 0.3), transparent 70%);
+    bottom: -60px;
+    left: -60px;
+    animation-delay: -3s;
+}
+
+.orb-3 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.3), transparent 70%);
+    top: 40%;
+    right: 20%;
+    animation-delay: -5s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(20px, -20px) scale(1.1); }
+    66% { transform: translate(-15px, 15px) scale(0.9); }
+}
+
+/* Konteyner */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 420px;
+    max-width: 90vw;
+    max-height: 85vh;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-gold) transparent;
+}
+
+.container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 2px;
+}
+
+/* Başlık */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 26px;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+}
+
+.logo-text h1 {
+    font-size: 16px;
+    font-weight: 700;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.3px;
+}
+
+.subtitle {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 1px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-settings {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-settings:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transform: rotate(30deg);
+}
+
+.time-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-glass);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-glass);
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--accent-gold);
+}
+
+.time-icon {
+    font-size: 13px;
+}
+
+/* Bölümler */
+.section {
+    animation: fadeIn 0.3s ease;
+}
+
+.section.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+}
+
+/* Namaz kartları */
+.prayer-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.prayer-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.prayer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--gradient-gold);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+}
+
+.prayer-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.prayer-card:hover::before {
+    transform: scaleX(1);
+}
+
+.prayer-card.active {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.prayer-card.active::before {
+    transform: scaleX(1);
+}
+
+.prayer-card .card-icon {
+    font-size: 24px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.prayer-card .card-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.prayer-card .card-time {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.prayer-card .card-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--gradient-gold);
+    color: #000;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+/* Detay sayfası */
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-back {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+.detail-header h2 {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.prayer-info-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.prayer-icon-big {
+    font-size: 36px;
+    filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.25));
+}
+
+.prayer-info-text h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.prayer-info-text p {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+/* Rekât seçenekleri */
+.rakah-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.rakah-type {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.rakah-type:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.rakah-type.active {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.08);
+}
+
+.rakah-type.disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.rakah-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 3px;
+}
+
+.rakah-count {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+/* Butonlar */
+.btn-start {
+    width: 100%;
+    background: var(--gradient-gold);
+    border: none;
+    color: #0a0a1a;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+}
+
+.btn-start:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 16px;
+}
+
+/* Namaz akışı */
+.flow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background: var(--bg-glass);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-glass);
+}
+
+.flow-info {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.flow-divider {
+    margin: 0 6px;
+    opacity: 0.3;
+}
+
+#flow-prayer-name {
+    color: var(--accent-gold);
+}
+
+.rakah-counter {
+    background: rgba(212, 175, 55, 0.08);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+/* Pozisyon gösterimi */
+.position-display {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.position-ring {
+    position: relative;
+    width: 160px;
+    height: 160px;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+    width: 100%;
+    height: 100%;
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 6;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: url(#gradient);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 477.52;
+    stroke-dashoffset: 477.52;
+    transition: stroke-dashoffset 0.4s ease;
+}
+
+.position-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.position-icon {
+    font-size: 44px;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.25));
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+
+.position-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* İlerleme çubuğu */
+.progress-container {
+    margin-bottom: 14px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-gold);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* Kontrol butonları */
+.controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.btn-control {
+    flex: 1;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.btn-control:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+.btn-control.active {
+    background: rgba(46, 204, 113, 0.12);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+/* Emote listesi */
+.emote-list-container {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 14px;
+    max-height: 160px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-gold) transparent;
+}
+
+.emote-list-container::-webkit-scrollbar {
+    width: 3px;
+}
+
+.emote-list-container::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 2px;
+}
+
+.list-title {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.emote-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.emote-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 11px;
+}
+
+.emote-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.emote-item.active {
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.emote-item.completed {
+    opacity: 0.35;
+}
+
+.emote-item .item-number {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.emote-item.active .item-number {
+    background: var(--accent-gold);
+    color: #0a0a1a;
+}
+
+.emote-item .item-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.emote-item .item-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.emote-item .item-rakah {
+    font-size: 9px;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+/* Footer */
+.flow-footer {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-finish {
+    flex: 1;
+    background: var(--gradient-green);
+    border: none;
+    color: #0a0a1a;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-finish:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.2);
+}
+
+.btn-cancel {
+    flex: 1;
+    background: rgba(231, 76, 60, 0.08);
+    border: 1px solid rgba(231, 76, 60, 0.25);
+    color: var(--accent-red);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-cancel:hover {
+    background: rgba(231, 76, 60, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Tamamlama ekranı */
+.completion-content {
+    text-align: center;
+    padding: 30px 16px;
+}
+
+.completion-icon {
+    font-size: 48px;
+    margin-bottom: 14px;
+    animation: bounce 1s ease infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+}
+
+.completion-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.completion-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.completion-dua {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-bottom: 24px;
+}
+
+/* SVG Gradient tanımı */
+svg defs {
+    display: none;
+}
+
+/* ========== AYARLAR EKRANI ========== */
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+}
+
+.setting-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.setting-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.setting-desc {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.setting-input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.setting-input input[type="number"] {
+    width: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 6px;
+    padding: 6px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.setting-input span {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    transition: 0.3s;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: rgba(212, 175, 55, 0.3);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(18px);
+    background: var(--accent-gold);
+}
+
+/* Ayar Grubu */
+.setting-group {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-top: 4px;
+}
+
+.group-title {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.prayer-toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.prayer-toggle-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.prayer-toggle-item:last-child {
+    border-bottom: none;
+}
+
+.prayer-toggle-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.prayer-toggle-info span:first-child {
+    font-size: 16px;
+}
+
+/* ========== TOAST BİLDİRİMLERİ ========== */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    min-width: 280px;
+    max-width: 340px;
+    box-shadow: var(--shadow-lg);
+    pointer-events: all;
+    animation: toastSlide 0.4s ease;
+    cursor: pointer;
+}
+
+@keyframes toastSlide {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.toast.toast-hide {
+    animation: toastFade 0.3s ease forwards;
+}
+
+@keyframes toastFade {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(30px); }
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.toast-icon {
+    font-size: 20px;
+}
+
+.toast-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+.toast-body {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.toast-footer {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.toast-btn {
+    flex: 1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.toast-btn-primary {
+    background: var(--gradient-gold);
+    color: #0a0a1a;
+}
+
+.toast-btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.toast-btn-secondary {
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+}
+
+.toast-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+}
+
+/* ========== HAKKINDA EKRANI ========== */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+}
+
+.about-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.about-icon {
+    font-size: 52px;
+    filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.3));
+}
+
+.about-title {
+    font-size: 22px;
+    font-weight: 700;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.about-version {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-glass);
+    padding: 2px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-glass);
+}
+
+.about-card {
+    width: 100%;
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+}
+
+.about-card h3 {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.about-dev {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-gold);
+}
+
+.about-link {
+    font-size: 12px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.about-link:hover {
+    text-decoration: underline;
+}
+
+.about-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.about-footer {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--accent-gold);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        padding: 14px;
+        width: 95vw;
+    }
+    
+    .position-ring {
+        width: 130px;
+        height: 130px;
+    }
+    
+    .position-icon {
+        font-size: 36px;
+    }
+    
+    .toast-container {
+        right: 10px;
+        left: 10px;
+        top: 10px;
+    }
+    
+    .toast {
+        min-width: unset;
+        max-width: unset;
+        width: 100%;
+    }
+}

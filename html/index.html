@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronin Namaz Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="hidden">
+        <!-- Arka plan efektleri -->
+        <div class="bg-effects">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+
+        <!-- Ana konteyner -->
+        <div class="container">
+            <!-- Başlık -->
+            <div class="header">
+                <div class="logo">
+                    <span class="logo-icon">🕌</span>
+                    <div class="logo-text">
+                        <h1>Ronin Namaz</h1>
+                        <p class="subtitle">Gelişmiş Namaz Sistemi</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                <button class="btn-settings" id="btn-about" title="Hakkında">
+                    <span>ℹ️</span>
+                </button>
+                <button class="btn-settings" id="btn-settings" title="Hatırlatıcı Ayarları">
+                    <span>⚙️</span>
+                </button>
+                <div class="time-display">
+                    <span class="time-icon">🕐</span>
+                    <span id="game-time">--:--</span>
+                </div>
+            </div>
+            </div>
+
+            <!-- Hatırlatıcı Ayarları Ekranı -->
+            <div id="settings-screen" class="section hidden">
+                <div class="detail-header">
+                    <button class="btn-back" id="btn-settings-back">
+                        <span>←</span> Geri
+                    </button>
+                    <h2>Hatırlatıcı Ayarları</h2>
+                </div>
+                <div class="settings-content">
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-label">Hatırlatmalar</span>
+                            <span class="setting-desc">Namaz vakitlerinde bildirim al</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-enabled">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-label">Vakit Başlamadan Önce</span>
+                            <span class="setting-desc">Kaç dakika kala hatırlatılsın?</span>
+                        </div>
+                        <div class="setting-input">
+                            <input type="number" id="setting-before-start" min="0" max="60" value="15">
+                            <span>dk</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <span class="setting-label">Vakit Bitmeden Önce</span>
+                            <span class="setting-desc">Kaç dakika kala hatırlatılsın?</span>
+                        </div>
+                        <div class="setting-input">
+                            <input type="number" id="setting-before-end" min="0" max="60" value="10">
+                            <span>dk</span>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3 class="group-title">Aktif Vakitler</h3>
+                        <div class="prayer-toggles" id="prayer-toggles">
+                            <!-- JS ile doldurulacak -->
+                        </div>
+                    </div>
+                    <button class="btn-start" id="btn-save-settings">
+                        <span>💾</span> Ayarları Kaydet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hakkında Ekranı -->
+            <div id="about-screen" class="section hidden">
+                <div class="detail-header">
+                    <button class="btn-back" id="btn-about-back">
+                        <span>←</span> Geri
+                    </button>
+                    <h2>Hakkında</h2>
+                </div>
+                <div class="about-content">
+                    <div class="about-logo">
+                        <span class="about-icon">🕌</span>
+                        <h1 class="about-title">Ronin Namaz</h1>
+                        <p class="about-version">v1.0.0</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🧑‍💻 Geliştirici</h3>
+                        <p class="about-dev">kadiratesdev</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>🔗 GitHub</h3>
+                        <a href="https://github.com/kadiratesdev/ronin-namaz" target="_blank" class="about-link">
+                            github.com/kadiratesdev/ronin-namaz
+                        </a>
+                    </div>
+                    <div class="about-card">
+                        <h3>📄 Açıklama</h3>
+                        <p class="about-desc">
+                            FiveM için geliştirilmiş, bağımsız, gelişmiş namaz sistemidir. 
+                            Oyun saatine göre namaz vakitlerini hesaplar, doğru rekât sırasıyla 
+                            animasyonları oynatır ve hatırlatıcı sistemi ile vakitleri kaçırmanızı önler.
+                        </p>
+                    </div>
+                    <div class="about-footer">
+                        <p>Allah kabul etsin. 🤲</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Namaz Vakitleri Seçimi -->
+            <div id="prayer-selection" class="section">
+                <h2 class="section-title">Namaz Vaktini Seçin</h2>
+                <div class="prayer-cards" id="prayer-cards">
+                    <!-- JS ile doldurulacak -->
+                </div>
+            </div>
+
+            <!-- Namaz Detayları -->
+            <div id="prayer-detail" class="section hidden">
+                <div class="detail-header">
+                    <button class="btn-back" id="btn-back">
+                        <span>←</span> Geri
+                    </button>
+                    <h2 id="detail-title">Namaz Detayı</h2>
+                </div>
+                <div class="detail-content">
+                    <div class="prayer-info-card">
+                        <div class="prayer-icon-big" id="detail-icon">🌅</div>
+                        <div class="prayer-info-text">
+                            <h3 id="detail-name">Sabah</h3>
+                            <p id="detail-desc">2 Sünnet + 2 Farz</p>
+                        </div>
+                    </div>
+                    <div class="rakah-options">
+                        <div class="rakah-type" data-type="sunnah" id="option-sunnah">
+                            <div class="rakah-label">Sünnet</div>
+                            <div class="rakah-count" id="count-sunnah">2 Rekât</div>
+                        </div>
+                        <div class="rakah-type active" data-type="fard" id="option-fard">
+                            <div class="rakah-label">Farz</div>
+                            <div class="rakah-count" id="count-fard">2 Rekât</div>
+                        </div>
+                        <div class="rakah-type" data-type="extraSunnah" id="option-extra">
+                            <div class="rakah-label">Son Sünnet</div>
+                            <div class="rakah-count" id="count-extra">-</div>
+                        </div>
+                        <div class="rakah-type" data-type="vitr" id="option-vitr">
+                            <div class="rakah-label">Vitir</div>
+                            <div class="rakah-count" id="count-vitr">-</div>
+                        </div>
+                    </div>
+                    <button class="btn-start" id="btn-start">
+                        <span class="btn-icon">🤲</span>
+                        Namaza Başla
+                    </button>
+                </div>
+            </div>
+
+            <!-- Namaz Akışı -->
+            <div id="prayer-flow" class="section hidden">
+                <!-- Üst bilgi -->
+                <div class="flow-header">
+                    <div class="flow-info">
+                        <span id="flow-prayer-name">Sabah</span>
+                        <span class="flow-divider">|</span>
+                        <span id="flow-type">Farz</span>
+                    </div>
+                    <div class="rakah-counter">
+                        <span id="rakah-text">1 / 2 Rekât</span>
+                    </div>
+                </div>
+
+                <!-- Ana pozisyon gösterimi -->
+                <div class="position-display">
+                    <div class="position-ring">
+                        <svg class="progress-ring" viewBox="0 0 160 160">
+                            <circle class="progress-ring-bg" cx="80" cy="80" r="76" />
+                            <circle class="progress-ring-fill" id="progress-ring" cx="80" cy="80" r="76" />
+                        </svg>
+                        <div class="position-inner">
+                            <div class="position-icon" id="position-icon">🧍</div>
+                            <div class="position-name" id="position-name">Kıyam</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İlerleme çubuğu -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="step-text">1 / 12 Adım</span>
+                    </div>
+                </div>
+
+                <!-- Kontrol butonları -->
+                <div class="controls">
+                    <button class="btn-control" id="btn-prev">
+                        <span>←</span> Önceki
+                    </button>
+                    <button class="btn-control btn-auto active" id="btn-auto">
+                        <span>▶</span> Otomatik
+                    </button>
+                    <button class="btn-control" id="btn-next">
+                        Sonraki <span>→</span>
+                    </button>
+                </div>
+
+                <!-- Emote listesi -->
+                <div class="emote-list-container">
+                    <h3 class="list-title">Namaz Sırası</h3>
+                    <div class="emote-list" id="emote-list">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+                </div>
+
+                <!-- Bitir / İptal -->
+                <div class="flow-footer">
+                    <button class="btn-finish" id="btn-finish">
+                        <span>✓</span> Namazı Bitir
+                    </button>
+                    <button class="btn-cancel" id="btn-cancel">
+                        <span>✕</span> İptal Et
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tamamlandı Ekranı -->
+            <div id="completion-screen" class="section hidden">
+                <div class="completion-content">
+                    <div class="completion-icon">🎉</div>
+                    <h2 class="completion-title">Namaz Tamamlandı!</h2>
+                    <p class="completion-text" id="completion-text">Sabah namazınızı eda ettiniz.</p>
+                    <p class="completion-dua">Allah kabul etsin.</p>
+                    <button class="btn-start" id="btn-complete-close">
+                        <span>✓</span> Tamam
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Bildirimleri -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
